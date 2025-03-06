@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinaria Patitas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>🐾 Patitas</h1>
+            <button id="closeSidebar">&times;</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><button id="btnNewPatient"><i class="fas fa-plus"></i> Nuevo Paciente</button></li>
+            <li><button id="btnViewPatients"><i class="fas fa-list"></i> Lista Pacientes</button></li>
+            <li><button id="btnCalendar"><i class="fas fa-calendar-alt"></i> Citas</button></li>
+        </ul>
+        <input type="checkbox" id="checkboxInput">
+        <label for="checkboxInput" class="toggleSwitch">
+        </label>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button id="menuToggle"><i class="fas fa-bars"></i></button>
+            <h2>🐾 Veterinaria Patitas</h2>
+        </header>
+
+        <!-- Form Section -->
+        <section class="form-container hidden"  id="formSection">
+            <h2><i class="fas fa-paw"></i> Nuevo Paciente</h2>
+            <form id="patientForm">
+                <div class="input-group">
+                    <label>Nombre del Animal:</label>
+                    <input type="text" id="petName" required>
+                </div>
+                <div class="input-group">
+                    <label>Dueño:</label>
+                    <input type="text" id="ownerName" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Fecha:</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Síntomas:</label>
+                    <textarea id="symptoms" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Registrar Paciente</button>
+            </form>
+        </section>
+
+        <!-- Patients List -->
+        <section class="patients-container" id="patientsSection">
+            <div class="patients-header">
+                <h2><i class="fas fa-users"></i> Pacientes Registrados</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Buscar paciente...">
+                </div>
+            </div>
+            <div class="patients-grid" id="patientsList"></div>
+        </section>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
