@@ -13,12 +13,13 @@ const patientsSection = document.getElementById('patientsSection');
 // Classes
 
 class Pet {
-  constructor(name, owner, email, date, symptoms) {
+  constructor(name, owner, email, date, symptoms, id) {
     this.petName = name;
     this.ownerName = owner;
     this.email = email;
     this.date = date;
     this.symptoms = symptoms;
+    this.id = id;
   }
   registerPet(pet) {
     patientsList.push(pet);
@@ -41,9 +42,24 @@ class UI{
             <p><strong>Fecha:</strong> ${pet.date}</p>
             <p><strong>Síntomas:</strong> ${pet.symptoms}</p>
             `;
+            const editDeleteCaonstainer = document.createElement('div');
+            editDeleteCaonstainer.classList.add('edit-delete-container');
+            const editBtn = document.createElement('button')
+            editBtn.innerHTML = 'Editar <svg fill="none" class="h-5 w-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>';
+            editBtn.classList.add('card-button', 'edit-button');
+            const deleteBtn = document.createElement('button')
+            deleteBtn.innerHTML = 'Eliminar <svg fill="none" class="h-5 w-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            deleteBtn.classList.add('card-button', 'delete-button');
+            editDeleteCaonstainer.appendChild(editBtn);
+            editDeleteCaonstainer.appendChild(deleteBtn);
+            card.appendChild(editDeleteCaonstainer);
+            const clone = structuredClone(pet)
+            editBtn.onclick = () => editing(clone);
+            deleteBtn.onclick = () => confirmation(pet.id);
             patients.appendChild(card);
         }
-    )}
+    )
+}
 }
 
 // initialize
@@ -108,21 +124,44 @@ patientForm.addEventListener('change', (e) => {
 });
 patientForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    // const errors = document.querySelectorAll('.error');
-    // errors.forEach(error => error.parentNode.removeChild(error));
-    if (email.value !== '' && petName.value !== '' && ownerName.value !== '' && date.value !== '' && symptoms.value !== '') {
-        const pet = new Pet(petName.value, ownerName.value, email.value, date.value, symptoms.value);
-        console.log(pet)
-        pet.registerPet(pet);
+    if (document.querySelector('.update-button')){
+        if (email.value !== '' && petName.value !== '' && ownerName.value !== '' && date.value !== '' && symptoms.value !== ''){
+            const index = patientsList.findIndex(obj => obj.id === document.querySelector('.update-button').id);
+            if (index > -1) {
+                patientsList[index].petName = petName.value;
+                patientsList[index].ownerName = ownerName.value;
+                patientsList[index].email = email.value;
+                patientsList[index].date = date.value;
+                patientsList[index].symptoms = symptoms.value;
+                localStorage.setItem('patientsList', JSON.stringify(patientsList));
+            }
         resetForm();
         switchView(false)
+        showsucceeded('Paciente editado');
+        document.querySelector('.btn-submit').textContent = 'Registrar Paciente';
+        document.querySelector('.btn-submit').classList.remove('update-button');
+        document.querySelector('.btn-submit').id = '';
+        ui.displayPatients();
+        }
+    } else {
+        if (email.value !== '' && petName.value !== '' && ownerName.value !== '' && date.value !== '' && symptoms.value !== '') {
+            const id = Math.random().toString(36).substring(2) + Date.now();
+            const pet = new Pet(petName.value, ownerName.value, email.value, date.value, symptoms.value, id);
+            console.log(pet)
+            pet.registerPet(pet);
+            resetForm();
+            switchView(false)
+            showsucceeded('paciente agregado');
+        }
     }
+
 }
 );
     // Search Functionality
 document.getElementById('searchInput').addEventListener('input', (e) => {
     ui.displayPatients(e.target.value);
 });
+
 
 // funtions
 
@@ -133,6 +172,57 @@ const switchView = (showFormView) => {
     formSection.classList.toggle('hidden', !showFormView);
     patientsSection.classList.toggle('hidden', showFormView);
 }
+
+function showsucceeded(text) {
+    document.querySelector('#successBox').textContent = text;
+    document.querySelector('#successBox').classList.add('showsucced');
+    console.log(document.querySelector('#successBox').classList);
+    setTimeout(() => {
+        document.querySelector('#successBox').classList.remove('showsucced');
+    }, 3000);
+}
+
+function editing(pet) {
+    switchView(true);
+    petName.value = pet.petName;
+    ownerName.value = pet.ownerName;
+    email.value = pet.email;
+    date.value = pet.date;
+    symptoms.value = pet.symptoms;
+    console.log(pet);
+    document.querySelector('.btn-submit').textContent = 'Actualizar';
+    document.querySelector('.btn-submit').classList.add('update-button');
+    document.querySelector('.btn-submit').id = pet.id;
+}
+
+function confirmation(id) {
+    const card = document.createElement('div');
+    card.classList.add('confirmation-card');
+    card.innerHTML = `
+    <p>¿Estás seguro de eliminar este paciente?</p>
+    <div class="buttons">
+        <button class="card-button" onclick="deletePet('${id}')">Si</button>
+        <button class="card-button cancel-button" onclick="cancelDelete()">No</button>
+    </div>
+    `;
+    patientsSection.appendChild(card);
+
+}
+function deletePet(id) {
+    const index = patientsList.findIndex(obj => obj.id === id);
+    if (index > -1) {
+        patientsList.splice(index, 1);
+        localStorage.setItem('patientsList', JSON.stringify(patientsList));
+        showsucceeded('Paciente eliminado');
+        document.querySelector('.confirmation-card').remove();
+        ui.displayPatients();
+    }
+}
+
+function cancelDelete() {
+    document.querySelector('.confirmation-card').remove();
+}
+
 
 // intitial steps
 

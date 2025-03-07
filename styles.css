@@ -184,6 +184,7 @@ main {
 .hidden {
     display: none;
 }
+
 .error{
     color: red;
     font-weight: bold;
@@ -227,6 +228,125 @@ main {
     background-color: var(--primary-color);
     transition-duration: .2s;
   }
+.success-box{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 255, 0, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+    z-index: 10000;
+    transition: all 0.3s ease-in-out;
+}
+.confirmation-card{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--base-color);
+    padding: 20px;
+    border-radius: 5px;
+    color: var(--text-color);
+    border: var(--text-color) solid 1px;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 10000;
+    transition: all 0.3s ease-in-out;
+}
+.buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    width: 50%;
+}
+.card-button{
+    background: red;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s linear;
+}
+.card-button:hover{
+    background: rgb(185, 0, 0);
+}
+.cancel-button{
+    background: var(--primary-color);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.cancel-button:hover{
+    background: var(--secondary-color);
+}
+.showsucced{
+    display: block;
+    animation: dissapear 3s linear;
+}
+.edit-delete-container{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+}
+.card-button{
+    display: flex;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.card-button svg{
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.edit-button{
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.7rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s linear;
+}
+.edit-button:hover{
+    background: var(--secondary-color);
+}
+
+.delete-button{
+    background: red;
+    color: white;
+    padding: 0.2rem 0.7rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s linear;
+}
+.delete-button:hover{
+    background: rgb(185, 0, 0);
+}
+
+@keyframes dissapear {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 
 
 /* Responsive Design */
