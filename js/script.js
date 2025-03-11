@@ -19,12 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.addEventListener('click', toggleSidebar);
     closeSidebar.addEventListener('click', toggleSidebar);
 
-    // 2. Navegación entre vistas
-    const switchView = (showFormView) => {
-        formSection.classList.toggle('hidden', !showFormView);
-        patientsSection.classList.toggle('hidden', showFormView);
-    };
-
     btnNewPatient.addEventListener('click', () => switchView(true));
     btnViewPatients.addEventListener('click', () => switchView(false));
 
@@ -60,3 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicialización
     switchView(false);
 });
+export const switchView = (showFormView) => {
+    formSection.classList.toggle('hidden', !showFormView);
+    patientsSection.classList.toggle('hidden', showFormView);
+};

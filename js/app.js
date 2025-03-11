@@ -1,3 +1,4 @@
+import { switchView } from "./script.js";
 // Variables
 const patientForm = document.getElementById('patientForm');
 const petName = document.getElementById('petName');
@@ -168,10 +169,7 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 function resetForm() {
     patientForm.reset();
 }
-const switchView = (showFormView) => {
-    formSection.classList.toggle('hidden', !showFormView);
-    patientsSection.classList.toggle('hidden', showFormView);
-}
+
 
 function showsucceeded(text) {
     document.querySelector('#successBox').textContent = text;
@@ -198,29 +196,43 @@ function editing(pet) {
 function confirmation(id) {
     const card = document.createElement('div');
     card.classList.add('confirmation-card');
-    card.innerHTML = `
-    <p>¿Estás seguro de eliminar este paciente?</p>
-    <div class="buttons">
-        <button class="card-button" onclick="deletePet('${id}')">Si</button>
-        <button class="card-button cancel-button" onclick="cancelDelete()">No</button>
-    </div>
-    `;
+    const text = document.createElement('p');
+    text.textContent = '¿Estás seguro de eliminar este paciente?';
+    card.appendChild(text);
+    const buttons = document.createElement('div');
+    buttons.classList.add('buttons');
+    const yesBtn = document.createElement('button');
+    yesBtn.textContent = 'Si';
+    yesBtn.classList.add('card-button');
+    const noBtn = document.createElement('button');
+    noBtn.textContent = 'No';
+    noBtn.classList.add('card-button', 'cancel-button');
+    buttons.appendChild(yesBtn);
+    buttons.appendChild(noBtn);
+    card.appendChild(buttons);
+    yesBtn.onclick = () => deletePet(id);
+    noBtn.onclick = () => cancelDelete();
     patientsSection.appendChild(card);
 
 }
 function deletePet(id) {
     const index = patientsList.findIndex(obj => obj.id === id);
     if (index > -1) {
+        console.log('Deleting pet')
         patientsList.splice(index, 1);
         localStorage.setItem('patientsList', JSON.stringify(patientsList));
         showsucceeded('Paciente eliminado');
         document.querySelector('.confirmation-card').remove();
         ui.displayPatients();
+    } else {
+        console.error('No se encontro el paciente');
     }
 }
 
 function cancelDelete() {
-    document.querySelector('.confirmation-card').remove();
+    if (document.querySelector('.confirmation-card')){
+        document.querySelector('.confirmation-card').remove()
+    };
 }
 
 
