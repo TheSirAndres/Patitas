@@ -1,4 +1,5 @@
 import { switchView } from "./script.js";
+import UI from "./UI-component.js";
 // Variables
 const patientForm = document.getElementById('patientForm');
 const petName = document.getElementById('petName');
@@ -6,9 +7,8 @@ const ownerName = document.getElementById('ownerName');
 const email = document.getElementById('email');
 const date = document.getElementById('date');
 const symptoms = document.getElementById('symptoms');
-const patientsList = JSON.parse(localStorage.getItem('patientsList')) || [];
-const patients = document.getElementById('patientsList')
 const formSection = document.getElementById('formSection');
+export const patientsList = JSON.parse(localStorage.getItem('patientsList')) || [];
 const patientsSection = document.getElementById('patientsSection');
 
 // Classes
@@ -28,40 +28,7 @@ class Pet {
     ui.displayPatients();
   }
 }
-class UI{
-    displayPatients(filter = '') {
-        patients.innerHTML = ''
-        const filteredPatients = patientsList.filter(pet =>
-            pet.petName.toLowerCase().includes(filter.toLowerCase()));
-        filteredPatients.forEach(pet => {
-            const card = document.createElement('div');
-            card.classList.add('patient-card');
-            card.innerHTML = `
-            <h3>${pet.petName}</h3>
-            <p><strong>Dueño:</strong> ${pet.ownerName}</p>
-            <p><strong>Email:</strong> ${pet.email}</p>
-            <p><strong>Fecha:</strong> ${pet.date}</p>
-            <p><strong>Síntomas:</strong> ${pet.symptoms}</p>
-            `;
-            const editDeleteCaonstainer = document.createElement('div');
-            editDeleteCaonstainer.classList.add('edit-delete-container');
-            const editBtn = document.createElement('button')
-            editBtn.innerHTML = 'Editar <svg fill="none" class="h-5 w-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>';
-            editBtn.classList.add('card-button', 'edit-button');
-            const deleteBtn = document.createElement('button')
-            deleteBtn.innerHTML = 'Eliminar <svg fill="none" class="h-5 w-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-            deleteBtn.classList.add('card-button', 'delete-button');
-            editDeleteCaonstainer.appendChild(editBtn);
-            editDeleteCaonstainer.appendChild(deleteBtn);
-            card.appendChild(editDeleteCaonstainer);
-            const clone = structuredClone(pet)
-            editBtn.onclick = () => editing(clone);
-            deleteBtn.onclick = () => confirmation(pet.id);
-            patients.appendChild(card);
-        }
-    )
-}
-}
+
 
 // initialize
 const ui = new UI
@@ -180,7 +147,7 @@ function showsucceeded(text) {
     }, 3000);
 }
 
-function editing(pet) {
+export function editing(pet) {
     switchView(true);
     petName.value = pet.petName;
     ownerName.value = pet.ownerName;
@@ -193,7 +160,7 @@ function editing(pet) {
     document.querySelector('.btn-submit').id = pet.id;
 }
 
-function confirmation(id) {
+export function confirmation(id) {
     const card = document.createElement('div');
     card.classList.add('confirmation-card');
     const text = document.createElement('p');
